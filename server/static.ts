@@ -1,14 +1,13 @@
 import express, { type Express } from "express";
-import fs from "fs";
 import path from "path";
+import fs from "fs";
 
 export function serveStatic(app: Express) {
   const distPath = path.join(process.cwd(), "dist", "public");
 
   if (!fs.existsSync(distPath)) {
-    throw new Error(
-      `Could not find the build directory: ${distPath}. Did you run the client build?`
-    );
+    console.warn("dist/public not found – skipping static serving");
+    return;
   }
 
   app.use(express.static(distPath));
